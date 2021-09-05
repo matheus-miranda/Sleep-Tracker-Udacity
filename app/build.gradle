@@ -38,6 +38,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     // Enables data binding.
     buildFeatures {
         dataBinding true
