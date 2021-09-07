@@ -65,6 +65,15 @@ class SleepTrackerFragment : Fragment() {
         // Set current activity as lifecycle owner to observe LiveData updates
         binding.lifecycleOwner = this
 
+        // Create adapter and bind to Recycler View
+        val adapter = SleepNightAdapter()
+        binding.sleepList.adapter = adapter
+
+        // Observe the nights list and submit it to the Recycler View adapter
+        sleepTrackerViewModel.nights.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
+
         // Observe so we know when to navigate
         sleepTrackerViewModel.navigateToSleepQuality.observe(viewLifecycleOwner, Observer { night ->
             night?.let {

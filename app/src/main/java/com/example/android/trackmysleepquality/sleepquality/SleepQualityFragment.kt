@@ -68,6 +68,9 @@ class SleepQualityFragment : Fragment() {
         // Add the ViewModel to DataBinding
         binding.sleepQualityViewModel = sleepQualityViewModel
 
+        // Set current activity as lifecycle owner to observe LiveData updates
+        binding.lifecycleOwner = this
+
         // Observe to determine when to navigate
         sleepQualityViewModel.navigateToTracker.observe(
             viewLifecycleOwner, Observer { shouldNavigate ->
@@ -78,8 +81,6 @@ class SleepQualityFragment : Fragment() {
                     sleepQualityViewModel.doneNavigation()
                 }
             })
-
-        binding.lifecycleOwner = this
 
         return binding.root
     }
