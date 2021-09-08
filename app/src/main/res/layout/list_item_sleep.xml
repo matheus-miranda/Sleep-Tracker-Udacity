@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="sleep"
+            type="com.example.android.trackmysleepquality.database.SleepNight" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +23,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:sleepImage="@{sleep}"
             tools:src="@drawable/ic_sleep_5" />
 
         <TextView
@@ -26,6 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_quality"
             app:layout_constraintTop_toTopOf="parent"
+            app:sleepQualityString="@{sleep}"
             tools:text="Excellent" />
 
         <TextView
@@ -36,6 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_quality_string"
             app:layout_constraintTop_toBottomOf="@id/tv_quality_string"
+            app:sleepDurationFormatted="@{sleep}"
             tools:text="Thursday 4am" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
