@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
@@ -64,6 +65,11 @@ class SleepTrackerFragment : Fragment() {
 
         // Set current activity as lifecycle owner to observe LiveData updates
         binding.lifecycleOwner = this
+
+        // Set Grid Layout Manager span 3 to the recycler view
+        val manager = GridLayoutManager(activity, 3)
+        binding.sleepList.layoutManager = manager
+
 
         // Create adapter and bind to Recycler View
         val adapter = SleepNightAdapter()
