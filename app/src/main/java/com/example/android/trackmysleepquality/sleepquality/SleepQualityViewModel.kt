@@ -19,52 +19,69 @@ package com.example.android.trackmysleepquality.sleepquality
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import kotlinx.coroutines.*
 
+/**
+ * ViewModel for SleepQualityFragment.
+ *
+ * @param sleepNightKey The key of the current night we are working on.
+ */
 class SleepQualityViewModel(
     private val sleepNightKey: Long = 0L,
-    private val database: SleepDatabaseDao
-) : ViewModel() {
+    val database: SleepDatabaseDao) : ViewModel() {
 
-    // Create Job and Coroutine UI Scope
-    private val viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    // Navigate back to SleepTracker
+    /**
+     * Variable that tells the fragment whether it should navigate to [SleepTrackerFragment].
+     *
+     * This is `private` because we don't want to expose the ability to set [MutableLiveData] to
+     * the [Fragment]
+     */
     private val _navigateToSleepTracker = MutableLiveData<Boolean?>()
-    val navigateToTracker: LiveData<Boolean?> get() = _navigateToSleepTracker
 
     /**
-     * Called when we navigate back to SleepTracker
+     * When true immediately navigate back to the [SleepTrackerFragment]
      */
-    fun doneNavigation() {
-        _navigateToSleepTracker.value = null
-    }
+    val navigateToSleepTracker: LiveData<Boolean?>
+        get() = _navigateToSleepTracker
 
+    /*
     /**
-     * Click handler for the quality of sleep
-     */
-    fun onSetSleepQuality(quality: Int) {
-        // Launch coroutine in the UI scope
-        uiScope.launch {
-            // Switch to the IO dispatcher
-            withContext(Dispatchers.IO) {
-                val tonight = database.get(sleepNightKey) ?: return@withContext
-                tonight.sleepQuality = quality
-                database.update(tonight)
-            }
-            _navigateToSleepTracker.value = true // trigger navigation
-        }
-
-    }
-
-
-    /**
-     * Cancel all executing coroutines when fragment is destroyed
+     * Cancels all coroutines when the ViewModel is cleared, to cleanup any pending work.
+     *
+     * onCleared() gets called when the ViewModel is destroyed.
      */
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+     */
+
+    /**
+     * Call this immediately after navigating to [SleepTrackerFragment]
+     */
+    fun doneNavigating() {
+        _navigateToSleepTracker.value = null
+    }
+
+    /**
+     * Sets the sleep quality and updates the database.
+     *
+     * Then navigates back to the SleepTrackerFragment.
+     */
+    fun onSetSleepQuality(quality: Int) {
+        viewModelScope.launch {
+            // IO is a thread pool for running operations that access the disk, such as
+            // our Room database.
+            //withContext(Dispatchers.IO) {
+            val tonight = database.get(sleepNightKey) ?: return@launch
+            tonight.sleepQuality = quality
+            database.update(tonight)
+            //}
+
+            // Setting this state variable to true will alert the observer and trigger navigation.
+            _navigateToSleepTracker.value = true
+        }
     }
 }

@@ -27,7 +27,7 @@ buildscript {
         version_lifecycle_extensions = "2.2.0"
         version_lifecycle = "2.2.0"
         version_navigation = '1.0.0'
-        version_room = "2.2.5"
+        version_room = "2.3.0"
     }
 
     repositories {
@@ -37,7 +37,7 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:$version_gradle"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
 
         // NOTE: Do not place your application dependencies here; they belong

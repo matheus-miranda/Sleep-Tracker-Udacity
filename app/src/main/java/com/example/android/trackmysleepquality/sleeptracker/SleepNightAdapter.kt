@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemSleepBinding
 
-class SleepNightAdapter(val clickListener: SleepNightListener) :
+class SleepNightAdapter(private val clickListener: SleepNightListener) :
     ListAdapter<SleepNight, SleepNightAdapter.ItemViewHolder>(DiffCallBack()) {
 
     override fun onCreateViewHolder(
